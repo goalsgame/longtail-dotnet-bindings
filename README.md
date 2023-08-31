@@ -1,13 +1,12 @@
 ### Builds
-[![Build and Test CodeGen](https://github.com/Golle/longtail/actions/workflows/build.yml/badge.svg)](https://github.com/Golle/longtail/actions/workflows/build.yml)   
-[![Run longtail tests](https://github.com/Golle/longtail/actions/workflows/longtail.yml/badge.svg)](https://github.com/Golle/longtail/actions/workflows/longtail.yml)
+[![Build and Test CodeGen](https://github.com/goalsgame/longtail-dotnet-bindings/actions/workflows/build.yml/badge.svg)](https://github.com/goalsgame/longtail-dotnet-bindings/actions/workflows/build.yml)   
+[![Run longtail tests](https://github.com/goalsgame/longtail-dotnet-bindings/actions/workflows/longtail.yml/badge.svg)](https://github.com/goalsgame/longtail-dotnet-bindings/actions/workflows/longtail.yml)
 
 ### NuGet
-![NuGet](https://img.shields.io/nuget/v/Longtail) 
+![NuGet](https://img.shields.io/nuget/v/longtail-dotnet-bindings) 
 
 ## Longtail C# Bindings
 This project generates cross platform C# bindings for Dan Engelbrecht longtail library. [longtail](https://github.com/goalsgame/longtail).
-
 
 ## How to
 ### BuildTool
@@ -19,11 +18,11 @@ Delete the LONGTAIL_VERSION file in the root folder of the repo to force the pip
 ```
 
 ## Current status
-Version 0.3.8 of longtail - [0.3.8](https://github.com/DanEngelbrecht/longtail/releases/tag/v0.3.8)
+Version 1.0.1 of longtail - [0.3.8](https://github.com/goalsgame/longtail/releases/tag/v1.0.1)
 
 **Implemented**
 * Generates bindings for all structs, enums, functions, function pointers
-* Supports .NET 5.0, 6.0 and 7.0-preview 4 on platforms Linux, MacOS and Windows x64
+* Supports .NET 8.0-preview on platforms Linux, MacOS(arm64) and Windows x64
 * Automatic documentation for function pointers with the original names of parameters
 
 **Working on**

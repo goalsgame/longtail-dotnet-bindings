@@ -8,18 +8,17 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, the-beast-mac]
         conf: [Release, Debug]
-        target: [net7.0, net8.0]
+        target: [net8.0]
 
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os }} - ${{ matrix.conf }} - ${{ matrix.target }}
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install .NET 7 and 8
+    - name: Install .NET 8
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: | 
-          7.0.x
           8.0.x
         include-prerelease: true
         
@@ -36,11 +35,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install .NET 7 and 8
+    - name: Install .NET 8
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: | 
-          7.0.x
           8.0.x
         include-prerelease: true
 
@@ -50,5 +48,26 @@ jobs:
     - name: Upload
       uses: actions/upload-artifact@v3
       with:
+        name: NugetPackage
         path: release/*.nupkg
 
+  publish:
+    needs: package
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    name: Publish NuGet package
+
+    steps:
+      - name: Install .NET 8.0 
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+          dotnet-quality: preview
+
+      - name: Download Nuget Package
+        uses: actions/download-artifact@v3
+        with:
+          name: NugetPackage
+
+      - name: Push nuget package
+        run: dotnet nuget push "*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/goalsgame --skip-duplicate 

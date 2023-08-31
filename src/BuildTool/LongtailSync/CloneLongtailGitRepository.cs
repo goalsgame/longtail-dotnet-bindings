@@ -8,7 +8,7 @@ internal class CloneLongtailGitRepository : IMiddleware<LongtailContext>
 {
     public async Task<LongtailContext> OnInvoke(LongtailContext context, ContextDelegate<LongtailContext> next)
     {
-        const string RepoUrl = "https://github.com/DanEngelbrecht/longtail.git";
+        const string RepoUrl = "https://github.com/goalsgame/longtail.git";
         var repoPath = Path.Combine(context.BasePath, "tmp", "repo");
         if (Directory.Exists(repoPath))
         {

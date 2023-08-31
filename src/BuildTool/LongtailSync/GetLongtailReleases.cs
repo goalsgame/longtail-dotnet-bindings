@@ -12,7 +12,7 @@ internal class GetLongtailReleases : IMiddleware<LongtailContext>
     {
         const string GithubAcceptHeaderValue = "application/vnd.github.v3+json";
         const string BaseUrl = "https://api.github.com";
-        const string Owner = "DanEngelbrecht";
+        const string Owner = "goalsgame";
         const string Repo = "longtail";
         const string LongtailGithubPath = $"{BaseUrl}/repos/{Owner}/{Repo}/releases";
 
@@ -59,7 +59,7 @@ internal class GetLongtailReleases : IMiddleware<LongtailContext>
         }
         Logger.Info($"Found a new version: {latestRelease.Name} ({latestRelease.PublishedAt})");
 
-        var expectedFileNames = new[] { "win32-x64.zip", "darwin-x64.zip", "linux-x64.zip" };
+        var expectedFileNames = new[] { "win32-x64.zip", "darwin-arm64.zip", "linux-x64.zip" };
         var assets = latestRelease
             .Assets
             .Where(a => expectedFileNames.Contains(a.Name))

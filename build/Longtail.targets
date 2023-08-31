@@ -29,8 +29,8 @@
             <IncludeInVsix>true</IncludeInVsix>
             <Pack>false</Pack>
         </Content>
-        <Content Include="$(MSBuildThisFileDirectory)\..\runtimes\win-x64\native\longtail_darwin_x64.so" Condition="'$(EffectivePlatform)' == 'osx-64' Or '$(EffectivePlatform)' == 'any'">
-            <Link>runtimes\osx-x64\native\longtail_darwin_x64.so</Link>
+        <Content Include="$(MSBuildThisFileDirectory)\..\runtimes\win-x64\native\longtail_darwin_arm64.so" Condition="'$(EffectivePlatform)' == 'osx-arm64' Or '$(EffectivePlatform)' == 'any'">
+            <Link>runtimes\osx-x64\native\longtail_darwin_arm64.so</Link>
             <PublishState>Included</PublishState>
             <Visible>False</Visible>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

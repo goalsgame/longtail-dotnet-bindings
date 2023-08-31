@@ -6,7 +6,7 @@
 ![NuGet](https://img.shields.io/nuget/v/Longtail) 
 
 ## Longtail C# Bindings
-This project generates cross platform C# bindings for Dan Engelbrecht longtail library. [Longtail](https://github.com/DanEngelbrecht/longtail).
+This project generates cross platform C# bindings for Dan Engelbrecht longtail library. [longtail](https://github.com/goalsgame/longtail).
 
 
 ## How to

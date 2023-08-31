@@ -13,22 +13,11 @@ public sealed unsafe class HashApi : IDisposable
         _hashApi = hashApi;
         _owner = owner;
     }
-
-    public static HashApi CreateBlake2HashAPI()
-    {
-        var api = LongtailLibrary.Longtail_CreateBlake2HashAPI();
-        return api != null ? new HashApi(api) : throw new InvalidOperationException($"{nameof(LongtailLibrary.Longtail_CreateBlake2HashAPI)} returned a null pointer");
-    }
-
+    
     public static HashApi CreateBlake3HashAPI()
     {
         var api = LongtailLibrary.Longtail_CreateBlake3HashAPI();
-        return api != null ? new HashApi(api) : throw new InvalidOperationException($"{nameof(LongtailLibrary.Longtail_CreateBlake2HashAPI)} returned a null pointer");
-    }
-    public static HashApi CreateMeowHashAPI()
-    {
-        var api = LongtailLibrary.Longtail_CreateMeowHashAPI();
-        return api != null ? new HashApi(api) : throw new InvalidOperationException($"{nameof(LongtailLibrary.Longtail_CreateBlake2HashAPI)} returned a null pointer");
+        return api != null ? new HashApi(api) : throw new InvalidOperationException($"{nameof(LongtailLibrary.Longtail_CreateBlake3HashAPI)} returned a null pointer");
     }
 
     public HashApiContext BeginContext()

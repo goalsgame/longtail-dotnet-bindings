@@ -5,3 +5,5 @@
 *.user
 
 tmp/
+
+*.DS_Store

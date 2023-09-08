@@ -1346,6 +1346,10 @@ internal unsafe partial class LongtailLibrary
     );
 
     [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+    public static extern Longtail_HashAPI* Longtail_CreateBlake2HashAPI();
+    [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+    public static extern uint Longtail_GetBlake2HashType();
+    [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
     public static extern Longtail_HashAPI* Longtail_CreateBlake3HashAPI();
     [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
     public static extern uint Longtail_GetBlake3HashType();
@@ -1465,6 +1469,10 @@ internal unsafe partial class LongtailLibrary
 
     [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
     public static extern Longtail_ChunkerAPI* Longtail_CreateHPCDCChunkerAPI();
+    [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+    public static extern Longtail_HashAPI* Longtail_CreateMeowHashAPI();
+    [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+    public static extern uint Longtail_GetMeowHashType();
     [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
     public static extern Longtail_CancelAPI* Longtail_CreateAtomicCancelAPI();
     [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]

@@ -14,22 +14,23 @@ public static unsafe class MemTracer
     public static int Allocations => _allocations;
     public static int Deallocations => _deallocations;
     public static long MemoryAllocated => _memoryAllocated;
+
     public static void Init()
     {
         if (!_initialized)
         {
             LongtailLibrary.Longtail_MemTracer_Init();
-            LongtailLibrary.Longtail_SetAllocAndFree(&Alloc, &Free);
+            LongtailLibrary.Longtail_SetReAllocAndFree(&Alloc, &Free);
             _initialized = true;
         }
     }
 
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]
-    private static void* Alloc(byte* context, ulong size)
+    private static void* Alloc(byte* context, void* old, ulong size)
     {
         Interlocked.Add(ref _memoryAllocated, (long)size);
         Interlocked.Increment(ref _allocations);
-        return LongtailLibrary.Longtail_MemTracer_Alloc(context, size);
+        return LongtailLibrary.Longtail_MemTracer_ReAlloc(context, old, size);
     }
 
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -40,6 +41,7 @@ public static unsafe class MemTracer
             // Only count memory that will actually be freed.
             Interlocked.Increment(ref _deallocations);
         }
+
         LongtailLibrary.Longtail_MemTracer_Free(p);
     }
 
@@ -64,7 +66,7 @@ public static unsafe class MemTracer
         if (_initialized)
         {
             LongtailLibrary.Longtail_MemTracer_Dispose();
-            LongtailLibrary.Longtail_SetAllocAndFree(null, null);
+            LongtailLibrary.Longtail_SetReAllocAndFree(null, null);
             _allocations = 0;
             _deallocations = 0;
             _memoryAllocated = 0;

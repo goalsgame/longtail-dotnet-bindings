@@ -43,14 +43,13 @@ MemTracer.Init();
         Console.WriteLine($"Starting upsync from {dataPath} to {destinationPath}");
         Upsync(dataPath, destinationPath, indexFilePath);
         Console.WriteLine($"Finished upsync in {timer.Elapsed.TotalMilliseconds:0.00}");
-
     }
 
-    
+
     // Download the chunks and unpack them
     {
         // using no cache
-        
+
         var timer = Stopwatch.StartNew();
         var output = Path.Combine(outPath, "cache");
         Console.WriteLine($"Starting downsync from {destinationPath} to {output}");
@@ -68,7 +67,7 @@ MemTracer.Init();
             Console.WriteLine("All files are identical!");
         }
     }
-    
+
     //{
     //    // using a cache
     //    var timer = Stopwatch.StartNew();
@@ -98,7 +97,7 @@ MemTracer.Init();
         using var hashRegistry = HashRegistry.CreateFullHashRegistry()!;
         using var hashApi = hashRegistry.GetHashApi(HashTypes.Blake3)!;
         using var chunker = ChunkerApi.CreateHPCDCChunkerAPI();
-        using var progress = new ProgressApi(tuple => Console.WriteLine($"{tuple.DoneCount}/{tuple.TotalCount} completed."));
+        using var progress = ProgressApi.Create(tuple => Console.WriteLine($"{tuple.DoneCount}/{tuple.TotalCount} completed."));
         using var versionIndex = VersionIndex.Create(path, fsStorage, hashApi!, chunker!, jobApi, files!, targetChunkSize, false)!;
         using var outBlockStore = BlockStoreApi.MakeBlockStoreApi(new SampleAsyncBlockStore(destination, "stuff", fsStorage));
         using var outStoreIndex = outBlockStore.GetExistingContent(versionIndex.GetChunkHashes())!;
@@ -126,12 +125,13 @@ MemTracer.Init();
         using var chunkerApi = ChunkerApi.CreateHPCDCChunkerAPI()!;
         using var fileInfos = FileInfos.GetFilesRecursively(output, fsStorage)!;
 
-        using var currentVersionIndex = VersionIndex.Create(output, fsStorage, hashApi, chunkerApi, jobApi, fileInfos, targetVersionIndex.TargetChunkSize, false)!;
+        using var currentVersionIndex =
+            VersionIndex.Create(output, fsStorage, hashApi, chunkerApi, jobApi, fileInfos, targetVersionIndex.TargetChunkSize, false)!;
         using var versionDiff = VersionDiff.Create(hashApi, currentVersionIndex, targetVersionIndex)!;
         var requiredChunkHashes = targetVersionIndex.GetRequiredChunkHashes(versionDiff);
         using var blockStoreApi = BlockStoreApi.MakeBlockStoreApi(new SampleAsyncBlockStore(source, "stuff", fsStorage));
 
-        using var progress = new ProgressApi(tuple => Console.WriteLine($"{tuple.DoneCount}/{tuple.TotalCount} completed."));
+        using var progress = ProgressApi.Create(tuple => Console.WriteLine($"{tuple.DoneCount}/{tuple.TotalCount} completed."));
         if (cachePath != null)
         {
             using var cacheFileBlockStore = BlockStoreApi.CreateFSBlockStoreApi(jobApi, fsStorage, source)!;
@@ -141,12 +141,14 @@ MemTracer.Init();
             using var lruStorage = BlockStoreApi.CreateLRUBlockStoreAPI(compressBlockStore, 32)!;
             using var shareStorage = BlockStoreApi.CreateShareBlockStoreAPI(lruStorage)!;
             using var storeIndex = blockStoreApi.GetExistingContent(requiredChunkHashes)!;
-            API.ChangeVersion(output, shareStorage, fsStorage, hashApi, jobApi, storeIndex, currentVersionIndex, targetVersionIndex, versionDiff, true, progressApi: progress);
+            API.ChangeVersion(output, shareStorage, fsStorage, hashApi, jobApi, storeIndex, currentVersionIndex, targetVersionIndex, versionDiff, true,
+                progressApi: progress);
         }
         else
         {
             using var storeIndex = blockStoreApi.GetExistingContent(requiredChunkHashes)!;
-            API.ChangeVersion(output, blockStoreApi, fsStorage, hashApi, jobApi, storeIndex, currentVersionIndex, targetVersionIndex, versionDiff, true, progressApi: progress);
+            API.ChangeVersion(output, blockStoreApi, fsStorage, hashApi, jobApi, storeIndex, currentVersionIndex, targetVersionIndex, versionDiff, true,
+                progressApi: progress);
         }
     }
 }
@@ -173,11 +175,13 @@ static string? FindFile(string? currentPath, string name, int parents = 6)
     {
         return null;
     }
+
     var fullPath = Path.Combine(currentPath, name);
     if (File.Exists(fullPath))
     {
         return currentPath;
     }
+
     return FindFile(Directory.GetParent(currentPath)?.FullName, name, parents - 1);
 }
 
@@ -215,6 +219,7 @@ static bool CompareContent(string path1, string path2)
         {
             throw new InvalidOperationException("failed to read all bytes in stream1..");
         }
+
         var buffer2 = new byte[stream2.Length];
         if (stream2.Read(buffer2) != stream2.Length)
         {
@@ -230,6 +235,7 @@ static bool CompareContent(string path1, string path2)
             }
         }
     }
+
     return true;
 }
 
@@ -239,6 +245,7 @@ static void CleanupFolder(string path)
     {
         Directory.Delete(path, true);
     }
+
     Directory.CreateDirectory(path);
 }
 

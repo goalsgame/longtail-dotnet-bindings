@@ -53,7 +53,7 @@ jobs:
       run: dotnet pack src/Longtail -c Release -o release/
 
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: NugetPackage
         path: release/*.nupkg
@@ -72,7 +72,7 @@ jobs:
           dotnet-quality: preview
 
       - name: Download Nuget Package
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: NugetPackage
 

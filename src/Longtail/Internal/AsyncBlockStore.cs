@@ -3,6 +3,7 @@
 internal class AsyncBlockStore : IBlockstore
 {
     private readonly IAsyncBlockstore _blockstore;
+
     public AsyncBlockStore(IAsyncBlockstore blockstore)
     {
         _blockstore = blockstore;
@@ -34,45 +35,47 @@ internal class AsyncBlockStore : IBlockstore
     {
         var hashes = blockHashes.ToArray();
 
-        Task.Run(async () =>
+        var err = ErrorCodesEnum.SUCCESS;
+        try
         {
-            var err = ErrorCodesEnum.SUCCESS;
-            try
-            {
-                await _blockstore.PreflightGet(hashes);
-            }
-            catch (Exception e)
-            {
-                err = ExceptionToErrorCode.Translate(e);
-            }
-            finally
-            {
-                optionalOnComplete(err);
-            }
-        });
-        return 0;
+            _blockstore
+                .PreflightGet(hashes)
+                .GetAwaiter()
+                .GetResult();
+        }
+        catch (Exception e)
+        {
+            err = ExceptionToErrorCode.Translate(e);
+        }
+        finally
+        {
+            optionalOnComplete(err);
+        }
+
+        return err;
     }
 
     public ErrorCodesEnum GetStoredBlock(ulong blockHash, Action<StoredBlock?, ErrorCodesEnum> onComplete)
     {
-        Task.Run(async () =>
+        StoredBlock? storedBlock = null;
+        var err = ErrorCodesEnum.SUCCESS;
+        try
         {
-            StoredBlock? storedBlock = null;
-            var err = ErrorCodesEnum.SUCCESS;
-            try
-            {
-                storedBlock = await _blockstore.GetStoredBlock(blockHash);
-            }
-            catch (Exception e)
-            {
-                err = ExceptionToErrorCode.Translate(e);
-            }
-            finally
-            {
-                onComplete(storedBlock, err);
-            }
-        });
-        return 0;
+            storedBlock = _blockstore
+                .GetStoredBlock(blockHash)
+                .GetAwaiter()
+                .GetResult();
+        }
+        catch (Exception e)
+        {
+            err = ExceptionToErrorCode.Translate(e);
+        }
+        finally
+        {
+            onComplete(storedBlock, err);
+        }
+
+        return err;
     }
 
     public ErrorCodesEnum GetExistingContent(ReadOnlySpan<ulong> blockHashes, uint minBlockUsagePercent, Action<StoreIndex?, ErrorCodesEnum> asyncCompleteApi)

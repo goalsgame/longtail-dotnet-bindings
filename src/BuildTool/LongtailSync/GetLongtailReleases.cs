@@ -59,14 +59,14 @@ internal class GetLongtailReleases : IMiddleware<LongtailContext>
         }
         Logger.Info($"Found a new version: {latestRelease.Name} ({latestRelease.PublishedAt})");
 
-        var expectedFileNames = new[] { "win32-x64.zip", "darwin-arm64.zip", "linux-x64.zip" };
+        var expectedFileNames = new[] { "win32-x64.zip", "win-arm64.zip", "darwin-arm64.zip", "linux-x64.zip" };
         var assets = latestRelease
             .Assets
             .Where(a => expectedFileNames.Contains(a.Name))
             .Select(a => new LongtailAsset(Path.GetFileNameWithoutExtension(a.Name), a.BrowserDownloadUrl))
             .ToArray();
 
-        if (assets.Length != 3)
+        if (assets.Length != 4)
         {
             return context with { Failed = true, Reason = $"Failed to find the expected files: {string.Join(", ", expectedFileNames)}. Got: {string.Join(", ", assets.Select(a => a.Name))}" };
         }

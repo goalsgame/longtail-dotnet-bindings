@@ -364,7 +364,7 @@ internal unsafe partial class LongtailLibrary
     );
 
     [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
-    public static extern void Longtail_Storage_OpenAppendfile(
+    public static extern int Longtail_Storage_OpenAppendFile(
         Longtail_StorageAPI* storage_api,
         byte* path,
         Longtail_StorageAPI_OpenFile** out_open_file

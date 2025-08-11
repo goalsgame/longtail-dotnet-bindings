@@ -6,7 +6,7 @@
 ![NuGet](https://img.shields.io/nuget/v/longtail-dotnet-bindings) 
 
 ## Longtail C# Bindings
-This project generates cross platform C# bindings for Dan Engelbrecht longtail library. [longtail](https://github.com/DanEngelbrecht/longtail).
+This project generates cross platform C# bindings for the longtail library. [longtail](https://github.com/goalsgame/longtail).
 
 ## How to
 ### BuildTool
@@ -18,7 +18,7 @@ Delete the LONGTAIL_VERSION file in the root folder of the repo to force the pip
 ```
 
 ## Current status
-Version 0.4.2 of longtail - [0.4.2](https://github.com/DanEngelbrecht/longtail/releases/tag/v0.4.2)
+Version 5.0 of longtail - [v5.0](https://github.com/goalsgame/longtail/releases/tag/v5.0)
 
 **Implemented**
 * Generates bindings for all structs, enums, functions, function pointers

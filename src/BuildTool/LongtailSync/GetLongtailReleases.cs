@@ -12,7 +12,7 @@ internal class GetLongtailReleases : IMiddleware<LongtailContext>
     {
         const string GithubAcceptHeaderValue = "application/vnd.github.v3+json";
         const string BaseUrl = "https://api.github.com";
-        const string Owner = "DanEngelbrecht";
+        const string Owner = "goalsgame";
         const string Repo = "longtail";
         const string LongtailGithubPath = $"{BaseUrl}/repos/{Owner}/{Repo}/releases";
 
